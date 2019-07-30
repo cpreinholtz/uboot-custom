@@ -9,6 +9,7 @@
 
 #ifndef __CONFIG_ZYNQ_ZC70X_H
 #define __CONFIG_ZYNQ_ZC70X_H
+#define CONFIG_ZYNQ_UART0
 
 #define CONFIG_ZYNQ_I2C0
 #define CONFIG_ZYNQ_EEPROM

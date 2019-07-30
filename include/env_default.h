@@ -55,9 +55,11 @@ const uchar default_environment[] = {
 #ifdef	CONFIG_IPADDR
 	"ipaddr="	__stringify(CONFIG_IPADDR)	"\0"
 #endif
+	/*"ipaddr="	__stringify(192.168.10.101) 	"\0"*/
 #ifdef	CONFIG_SERVERIP
 	"serverip="	__stringify(CONFIG_SERVERIP)	"\0"
 #endif
+	/*"serverip="	__stringify(192.168.10.10) 	"\0"*/
 #ifdef	CONFIG_SYS_AUTOLOAD
 	"autoload="	CONFIG_SYS_AUTOLOAD		"\0"
 #endif

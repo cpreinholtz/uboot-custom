@@ -7,8 +7,25 @@
  * SPDX-License-Identifier:	GPL-2.0+
  */
 
+
 #ifndef __CONFIG_ZYNQ_COMMON_H
 #define __CONFIG_ZYNQ_COMMON_H
+
+#define CONFIG_NETCONSOLE 1
+/********clark*************************/
+/*
+/*
+#define CONFIG_DEBUG_UART y
+#define CONFIG_DEBUG_UART_ZYNQ y
+#define CONFIG_DEBUG_UART_BASE 0xe0000000
+#define CONFIG_DEBUG_UART_CLOCK 50000000
+#define CONFIG_SYS_UART_BASE 0xe0000000
+#define CONFIG_UART_BASE 0xe0000000*/
+
+/*#define CONFIG_DEBUG_UART_BASE=0xe0001000*/
+
+/**************************************/
+
 
 /* CPU clock */
 #ifndef CONFIG_CPU_FREQ_HZ
@@ -37,6 +54,8 @@
 #define CONFIG_ZYNQ_SERIAL
 
 /* Ethernet driver */
+# define CONFIG_IPADDR 192.168.10.105
+# define CONFIG_SERVERIP 192.168.10.10
 #if defined(CONFIG_ZYNQ_GEM)
 # define CONFIG_MII
 # define CONFIG_SYS_FAULT_ECHO_LINK_DOWN
@@ -228,17 +247,17 @@
 				"then env run importbootenv; " \
 			"fi; " \
 		"fi; \0" \
-	"mmc_loadbit=echo Loading bitstream from SD/MMC/eMMC to RAM.. && " \
+	"mmc_loadbit=echo 1Loading bitstream from SD/MMC/eMMC to RAM.. && " \
 		"mmcinfo && " \
 		"load mmc 0 ${loadbit_addr} ${bitstream_image} && " \
 		"fpga load 0 ${loadbit_addr} ${filesize}\0" \
-	"norboot=echo Copying Linux from NOR flash to RAM... && " \
+	"norboot=echo 2Copying Linux from NOR flash to RAM... && " \
 		"cp.b 0xE2100000 ${kernel_load_address} ${kernel_size} && " \
 		"cp.b 0xE2600000 ${devicetree_load_address} ${devicetree_size} && " \
 		"echo Copying ramdisk... && " \
 		"cp.b 0xE2620000 ${ramdisk_load_address} ${ramdisk_size} && " \
 		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
-	"qspiboot=echo Copying Linux from QSPI flash to RAM... && " \
+	"qspiboot=echo 3Copying Linux from QSPI flash to RAM... && " \
 		"sf probe 0 0 0 && " \
 		"sf read ${kernel_load_address} 0x100000 ${kernel_size} && " \
 		"sf read ${devicetree_load_address} 0x600000 ${devicetree_size} && " \
@@ -247,24 +266,25 @@
 		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
 	"uenvboot=" \
 		"if run loadbootenv; then " \
-			"echo Loaded environment from ${bootenv}; " \
+			"echo 4Loaded environment from ${bootenv}; " \
 			"run importbootenv; " \
 		"fi; " \
 		"if test -n $uenvcmd; then " \
 			"echo Running uenvcmd ...; " \
 			"run uenvcmd; " \
 		"fi\0" \
-	"sdboot=if mmcinfo; then " \
-			"run uenvboot; " \
-			"echo Copying Linux from SD to RAM... && " \
-			"load mmc 0 ${kernel_load_address} ${kernel_image} && " \
-			"load mmc 0 ${devicetree_load_address} ${devicetree_image} && " \
-			"load mmc 0 ${ramdisk_load_address} ${ramdisk_image} && " \
-			"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}; " \
+	"sdboot=&&"\
+			"echo 5CLarkMod sdbood in ztnc comon && " \
+			"setenv ipaddr 191.168.1.20 && " \
+			"setenv serverip 191.168.1.191 && "\
+			"tftpboot 0x100000 high1.bit && " \
+			"fgpa load 0x100070 4041580 && " \
+			"tftpboot 0 baremetal.elf && " \
+			"bootelf 0 ; " \
 		"fi\0" \
 	"usbboot=if usb start; then " \
 			"run uenvboot; " \
-			"echo Copying Linux from USB to RAM... && " \
+			"echo 6Copying Linux from USB to RAM... && " \
 			"load usb 0 ${kernel_load_address} ${kernel_image} && " \
 			"load usb 0 ${devicetree_load_address} ${devicetree_image} && " \
 			"load usb 0 ${ramdisk_load_address} ${ramdisk_image} && " \
@@ -294,10 +314,14 @@
 		"sf read 0x100000 0x0 ${boot_size} && " \
 		"zynqrsa 0x100000 && " \
 		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
-	"rsa_sdboot=echo Copying Image from SD to RAM... && " \
-		"load mmc 0 0x100000 ${boot_image} && " \
-		"zynqrsa 0x100000 && " \
-		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
+	"rsa_sdboot=echo Copying 4545454648789Image from SD to RAM... && " \
+			"echo 7CLarkMod sdbood in ztnc comon && " \
+			"setenv ipaddr 191.168.1.20 && " \
+			"setenv serverip 191.168.1.191 && "\
+			"tftpboot 0x100000 high1.bit && " \
+			"fgpa load 0x100070 4041580 && " \
+			"tftpboot 0 baremetal.elf && " \
+			"bootelf 0 \0" \
 	"rsa_jtagboot=echo TFTPing Image to RAM... && " \
 		"tftpboot 0x100000 ${boot_image} && " \
 		"zynqrsa 0x100000 && " \

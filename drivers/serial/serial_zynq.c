@@ -213,6 +213,12 @@ U_BOOT_DRIVER(serial_zynq) = {
 	.flags = DM_FLAG_PRE_RELOC,
 };
 
+/*#define CONFIG_DEBUG_UART y
+#define CONFIG_DEBUG_UART_ZYNQ y
+#define CONFIG_DEBUG_UART_BASE 0xe0000000
+#define CONFIG_DEBUG_UART_CLOCK 50000000*/
+/*#define CONFIG_DEBUG_UART_BASE=0xe0001000*/
+
 #ifdef CONFIG_DEBUG_UART_ZYNQ
 static inline void _debug_uart_init(void)
 {
